@@ -42,3 +42,21 @@
     color: #ffff
 
 }
+
+#output{
+background-color: #ffff;
+border-radius: 6px;
+}
+
+.Mensaje{
+padding: 0%;
+margin: 2px;
+padding-left: 10px;
+}
+
+.Username{
+    text-align: end;
+     font-style: italic;
+      font-weight: 400;
+      color: blue;
+}

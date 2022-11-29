@@ -9,43 +9,33 @@ const server = app.listen(8080,()=> console.log("Servidor corriendo"))
 app.engine('handlebars', handlebars.engine())
 app.set('views', './public/views')
 app.set('view engine', 'ejs')
-
-
 app.use(express.json())
 app.use(express.urlencoded({extended:true}))
 app.use(express.static('views'))
 app.use(express.static('public'))
-
-
-
 app.use("/",productsRouter)
 app.use("/products",productsRouter)
 
+
+// logica del websocket
 const mensajes = []
 
 const io= new Server(server)
 
-usuario="andres"
-
+usuario="Andres"
 
 io.on('connection', (socket) => {
-console.log("Usuario conectado")
-socket.emit('message',`Bienvenido${usuario}`)
+console.log("Usuario conectado", socket.id)
+
 socket.on('disconnect',()=>{
-    console.log("Usuario desconectado")
-})
+    console.log("Usuario desconectado", socket.id)
 })
 
-io.on('set-name', (name) => {
-    console.log('set-name', name);
-    socket.emit('user-connected', name);
-    socket.broadcast.emit('user-connected', name);
+socket.on('mensaje-saliente', (data) => {
+    mensajes.push(data);
+    console.log(data);
+    io.sockets.emit('mensaje-saliente',data)
 });
 
-
-io.on('new-message', (message) => {
-    cajaChat.push(message);
-    socket.emit('messages', messages);
-    socket.broadcast.emit('messages', messages);})
-
+})
 
