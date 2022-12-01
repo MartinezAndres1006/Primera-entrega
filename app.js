@@ -34,8 +34,10 @@ socket.on('disconnect',()=>{
 socket.on('mensaje-saliente', (data) => {
     mensajes.push(data);
     console.log(data);
-    io.sockets.emit('mensaje-saliente',data)
+    socket.emit('mensaje-saliente',data)
+    socket.broadcast.emit('mensaje-saliente',data)
 });
 
 })
 
+console.log();

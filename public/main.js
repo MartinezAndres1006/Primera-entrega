@@ -10,15 +10,17 @@ const username = document.getElementById('username')
 
 getNow = () => {
     const FyH = new Date();
-    return `${FyH.getHours()}:${FyH.getMinutes()}`;
+    return `${FyH.getDate()}/${FyH.getMonth()}-${FyH.getHours()}:${FyH.getMinutes()}`;
 }
 const date=getNow()
 
 
  btn.addEventListener('click',function (){
+    const mensaje= message.value
+    message.value= " "
     socket.emit("mensaje-saliente",{    
         username: username.value,
-        message: message.value,
+        message: mensaje,
         date: date
     }
     )
@@ -27,16 +29,18 @@ const date=getNow()
  
  socket.on('mensaje-saliente', function(data){
      console.log(data);
-     output.innerHTML +=  
-     `<div class="output">
-                    <div>
-                    <p class="Mensaje">${data.message}</p>
-                    <p class="Username">${data.username} - ${data.date}</p>
-                    </div>
-                    <div class="">
-                    </div>
-            </div>`
- })
+         output.innerHTML +=  
+         `<div class="output">
+         <div>
+         <p class="Mensaje">${data.message}</p>
+         <p class="Username">${data.username} - <b class="fecha">${data.date}</b></p>
+         </div>
+         <div class="">
+         </div>
+         </div>`
+        }
+
+        )
 
 
  

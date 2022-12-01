@@ -1,10 +1,19 @@
-<div class="contenedor">
-    <h1 class="letra">Chat!!!</h1>
-        <div id="output"></div>
-        <div id="action"></div>
-        <label for="Name">Ingresa tu nombre acá</label>
-        <input class="form-control" type="text" id="username" placeholder="Nombre" required>
-        <label for="Name">Ingresa tu Mensaje acá</label>
-        <input class="form-control" type="text" id="message" placeholder="Mensaje" required />
-        <button id="send" class="btn btn-primary botoncito">send</button>
+<div class="row">
+    <div class="col-md-6">
+        <div class="contenedor">
+            <h1 class="letra">Chat</h1>
+            <label for="Name">Ingresa tu nombre acá</label>
+            <input class="form-control" type="text" id="username" placeholder="Nombre" required>
+            <label for="Name">Ingresa tu Mensaje acá</label>
+            <input class="form-control" type="text" id="message" placeholder="Mensaje" required />
+            <button id="send" class="btn btn-primary botoncito">Enviar!</button>
+            <!-- <div id="output"></div> -->
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="contenedor">
+            <h2 class="letra">Mensajes</h2>
+            <div id="output"></div>
+        </div>
+    </div>
 </div>

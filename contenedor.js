@@ -144,7 +144,27 @@ class Contenedor{
   
       }
     }
+
+
+
+
+    write(allProductsArray, file){
+
+      let json = JSON.stringify(allProductsArray);
+      try{
+          fs.writeFileSync(file, json);
+      }catch(err){
+          console.log('Error en la escritura', err);
+      }
   }
+
+
+
+
+  }
+
+
+
     
 
 module.exports=Contenedor
