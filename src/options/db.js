@@ -29,10 +29,9 @@ const listaProductos = [{
 }]
 
 
-
-    const db = knex(options.sql);
+    const db = knex(options);
     try {
-         db.schema.createtalbe('productos', (table) => {
+         db.schema.createTable('productos', (table) => {
             table.increments('id').primary();
             table.string('nombre');
             table.string('descripcion');
@@ -43,11 +42,9 @@ const listaProductos = [{
             table.dateTime('timestamp').defaultTo(db.fn.now());
         });
          db('productos').insert(listaProductos);
-        
-        
         console.log("Datos de productos agregados");
        
     } catch (err) {
     
         console.log(err);
-    }
+    };
