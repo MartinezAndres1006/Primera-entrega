@@ -1,6 +1,6 @@
 const express = require('express')
 const router = express.Router()
-const contenedorProductos = require('../Dbsql/productosEnMemoria')
+const contenedorProductos = require('../BaseDeDatos/productosEnMemoria')
 const contenedor = new contenedorProductos()
 // const file = 'src/products.txt'
 
