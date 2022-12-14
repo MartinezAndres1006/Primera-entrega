@@ -6,7 +6,7 @@ const db = knex(options)
 
 
 
-class ContenedorMemoria extends contenedoBase{
+class contenedorMemoria extends contenedoBase{
 constructor(){
     super("carritos")
 }
@@ -53,4 +53,4 @@ constructor(){
     }
     
 
-
+module.exports = contenedorMemoria
