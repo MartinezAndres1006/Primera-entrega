@@ -4,7 +4,14 @@ const contenedoBase = require('./contenedorBase')
 const db = knex(options)
 
 
-
+productos=[{
+  "nombre": "Remera nike",
+  "descripcion": "Talle l",
+  "codigo": 12563,
+  "foto": "url",
+  "precio": 4500,
+  "stock": 23
+}]
 
 class contenedorMemoria extends contenedoBase{
 constructor(){

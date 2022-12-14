@@ -1,7 +1,7 @@
 const knex = require('knex')
 const options = require('../options/mysql.config')
-
 const db = knex(options)
+
 
 class contenedorBase {
     constructor(table) {
@@ -64,9 +64,8 @@ class contenedorBase {
             foto,
             precio,
             stock,
-            timestamp,
             });
-          const updated_product = this.getOne(id);
+          const updated_product = this.getOnlyOne(id);
           return updated_product;
     
         } catch (error) {

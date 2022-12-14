@@ -1,6 +1,6 @@
 const express = require('express')
 const router = express.Router()
-const Contenedor = require('../persistence/contenedor')
+const Contenedor = require('../Dbsql/carritosEnMemoria')
 const contenedor = new Contenedor()
 const file = 'src/cart.txt'
 
