@@ -25,7 +25,6 @@ constructor(){
     
       async borrarProducto(idCarrito, idProducto) {
         try {
-          /** Utiliza tabla intermedia carritos_productos y carga los FK id */
           await db("carritos_productos")
             .where("carrito_id", idCarrito)
             .andWhere("producto_id", idProducto)
@@ -37,11 +36,9 @@ constructor(){
     
       async listarProductosDelCarrito(idCarrito) {
         try {
-          /** Utiliza tabla intermedia carritos_productos y carga los FK id */
           const productos = await db("carritos_productos")
             .select("producto_id")
             .where("carrito_id", idCarrito)
-            // join con tabla productos y traer los datos de los productos
             .join("productos", "carritos_productos.producto_id", "productos.id")
             .select("productos.*");
           return productos;
