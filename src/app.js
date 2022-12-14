@@ -1,4 +1,5 @@
 const express = require('express')
+
 // const handlebars = require('express-handlebars')
 const app= express()
 const productsRouter = require('./routes/products')
@@ -6,8 +7,9 @@ const productsRouter = require('./routes/products')
 const cartRouter= require('./routes/cartRouter')
 const { Server } = require('socket.io');
 const server = app.listen(8080,()=> console.log("Servidor corriendo"))
-
+const dotenv= require('dotenv')
 // config
+dotenv.config()
 // app.engine('handlebars', handlebars.engine())
 // app.set('views', './public/views')
 app.set('view engine', 'ejs')

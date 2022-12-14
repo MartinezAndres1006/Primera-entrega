@@ -1,20 +1,17 @@
 const express = require('express')
 const router = express.Router()
-const Contenedor = require('../persistence/contenedor')
-const contenedor = new Contenedor()
-const file = 'src/products.txt'
+const contenedorProductos = require('../Dbsql/productosEnMemoria')
+const contenedor = new contenedorProductos()
+// const file = 'src/products.txt'
 
 const multer = require('multer')
-
-
-let admin= false
 
 getNow = () => {
     const FyH = new Date();
     return `${FyH.getDate()}/${FyH.getMonth()}-${FyH.getHours()}:${FyH.getMinutes()}`;
 }
 
-const date=getNow()
+const date = getNow()
 
 const storage = multer.diskStorage({
     // destination: function (req, file, cb) {
@@ -45,102 +42,88 @@ const middlewareProducts = (req, res, next) => {
     }
 }
 
-router.get('/', (req, res) => {
-    const products =  contenedor.read(file)
-        products?
-        res.status(200).json(products) :
-        res.status(400).json({
-            mensaje: "No hay productos existentes"
+router.get('/', async (req, res) => {
+    try {
+        const productos = await contenedor.getAll()
+        productos ? res.status(200).json(productos) : res.status(404).json({
+            message: "No hay productos"
         });
-})
-
-
-router.get('/productos/:id', (req, res) => {
-    const { id } = req.params;
-    const product = contenedor.getById(parseInt(id), file);
-    product ? res.json({
-            product_id: id,
-            producto: product
-        }) :
-        res.status(404).json({
-            message: `No tenemos este producto id: ${id}`
+    } catch (error) {
+        res.status(500).json({
+            message: err.message
         });
-})
-    router.post('/productos', middlewareProducts, (req, res) => {
-
-        if(admin== true){
-            console.log("Acceso concedido");
-        const product = req.body;
-        product.timestamp = date;
-        const savedProduct =  contenedor.save(product, file)
-       
-       product ? res.status(200).json({
-            mensaje: "Producto guardado",
-            producto: savedProduct,
-          })
-        : res.status(400).json({ mensaje: "No se pudo guardar el producto" });
-
-        }else{
-            console.log("Acceso denegado!");
-            res.json("Papa no eres admin")
-        }
-    })
-
-
-
-if(admin==true){
-
-    
-}
-router.put('/productos/:id', (req, res) => {
-   
-   if(admin== true){
-
-    const { id } = req.params;
-    let body = req.body;
-    const product = contenedor.getById(parseInt(id), file);
-    if (product) {
-        contenedor.updateProduct(id, body, file)
-        res.json({
-            message: 'Producto actualizado',
-            producto: body
-        })
-    } else {
-        res.json({
-            message: 'No existe tal producto id :' + id
-        })
     }
-   }else{
-    res.json("Papa no eres admin")
-   }
-   
-   
+})
+
+
+router.get('/productos/:id', async (req, res) => {
+    try {
+        const producto = await contenedor.getOnlyOne(req.params.id)
+        producto.lenght > 0 ? res.status(200).json(producto) : res.status(200).json(producto);
+    } catch (error) {
+        res.status(500).json({
+            message: err.message
+        });
+    }
+
+})
+router.post('/productos', middlewareProducts, async (req, res) => {
+
+    try {
+        const nuevoProducto = await contenedor.create(req.body);
+        res.status(201).json({
+            message: "Producto creado con éxito",
+            producto: nuevoProducto,
+        });
+    } catch (err) {
+        res.status(500).json({
+            message: err.message
+        });
+    }
+})
+
+
+
+router.put('/productos/:id', async (req, res) => {
+
+    try {
+        const productoActualizado = await contenedor.update(
+            req.params.id,
+            req.body
+        );
+
+        res.status(200).json({
+            message: "Producto actualizado con éxito",
+            producto: productoActualizado,
+        });
+
+    } catch (err) {
+        res.status(500).json({
+            message: err.message
+        });
+    }
+
 
 })
 
 
 
 
-router.delete('/productos/:id', (req, res) => {
-    
-    if(admin== true){
-    
-    const { id } = req.params;
-    const product = contenedor.deleteById(parseInt(id), file);
-    if (product) {
-        res.json({
-            message: 'Producto eliminado',
-            id: id
-        })
-    } else {
-        res.json({
-            message: 'Producto no encontrado. Id: ' + id
-        })
-    };
-}else{
-    console.log("Acceso denegado!");
-    res.json("No eres admin rey!")
-}
+router.delete('/productos/:id', async (req, res) => {
+    try {
+
+        const productoEliminado = await contenedor.deleteById(req.params.id);
+        productoEliminado ? res.status(200).json({
+                message: "Producto borrado con éxito",
+                id: req.params.id
+            }) :
+            res.status(404).json({
+                message: "Producto no encontrado: id " + req.params.id
+            });
+    } catch (error) {
+        return error.message
+    }
+
 });
 
 
